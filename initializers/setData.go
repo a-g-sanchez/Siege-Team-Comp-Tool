@@ -3,7 +3,6 @@ package initializers
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"os"
 	"slices"
 	"strings"
@@ -18,18 +17,18 @@ func SetData() {
 
 	defer file.Close()
 
-	reader := bufio.NewReader(file)
+	scanner := bufio.NewScanner(file)
 
-	// mapPool := []string{
-	// 	"bank",
-	// 	"coastline",
-	// 	"border",
-	// 	"stadim",
-	// 	"chalet",
-	// 	"clubhouse",
-	// }
+	mapPool := []string{
+		"bank",
+		"coastline",
+		"border",
+		"stadim",
+		"chalet",
+		"clubhouse",
+	}
 
-	currentOps := []string{
+	allOps := []string{
 		"Glaz",
 		"Fuze",
 		"IQ",
@@ -67,37 +66,48 @@ func SetData() {
 		"Ram",
 	}
 
-	type siteLocation struct {
-		siteName    string
-		opererators []string
-	}
+	type mapData map[string]interface{}
 
-	var bank siteLocation
+	maps := make(mapData)
 
-	for {
-		line, err := reader.ReadString('\n')
+	var currentMap string
+	var currentSite string
+	var ops []string
+	var foundSite bool
+
+	for scanner.Scan() {
+		line := scanner.Text()
 		line = strings.TrimSpace(line)
 
-		if err == io.EOF {
-			// fmt.Println(line)
-			if slices.Contains(currentOps, line) {
-				bank.opererators = append(bank.opererators, line)
-			}
-			break
-		} else if err != nil {
-			fmt.Println("Error reading file", err)
-			break
+		if slices.Contains(mapPool, line) {
+			currentMap = line
+			maps["mapName"] = currentMap
 		}
 
 		if strings.Contains(line, "Site") {
-			tempSiteSLice := strings.Fields(line)
-			site := strings.Join(tempSiteSLice[1:], " ")
-			bank.siteName = site
-		} else if slices.Contains(currentOps, line) {
-			bank.opererators = append(bank.opererators, line)
+			tempSlice := strings.Fields(line)
+			currentSite = strings.Join(tempSlice[1:], " ")
+			foundSite = true
+			ops = nil
+			continue
+		}
+
+		if foundSite && slices.Contains(allOps, line) {
+			ops = append(ops, line)
+
+			if len(ops) == 5 {
+				maps[currentSite] = ops
+				foundSite = false
+				currentMap = ""
+			}
 		}
 
 	}
 
-	fmt.Println(bank)
+	// fmt.Println(maps["CEO - Executive Lounge"])
+	// if slice, ok := maps["Lockers - CCTV"].([]string); ok {
+	// 	for i, op := range slice {
+	// 		fmt.Println(i, op)
+	// 	}
+	// }
 }
