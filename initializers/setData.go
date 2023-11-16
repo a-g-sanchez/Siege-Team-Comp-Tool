@@ -8,10 +8,8 @@ import (
 	"strings"
 )
 
-type StratData map[string]interface{}
-
-func SetData() StratData {
-	file, err := os.Open("R6-SIEGE-TEAM-COMP-BANK.csv")
+func SetData() map[string]map[string][]string {
+	file, err := os.Open("R6-SIEGE-TEAM-COMP.csv")
 
 	if err != nil {
 		fmt.Println("Error: ", err)
@@ -28,6 +26,7 @@ func SetData() StratData {
 		"stadim",
 		"chalet",
 		"clubhouse",
+		"theme park",
 	}
 
 	allOps := []string{
@@ -68,14 +67,11 @@ func SetData() StratData {
 		"Ram",
 	}
 
-	// type stratData map[string]interface{}
-
-	strats := make(StratData)
+	strats := make(map[string]map[string][]string)
 
 	var currentMap string
 	var currentSite string
-	var ops []string
-	var foundSite bool
+	var foundMap, foundSite bool
 
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -83,35 +79,29 @@ func SetData() StratData {
 
 		if slices.Contains(mapPool, line) {
 			currentMap = line
-			strats["mapName"] = currentMap
+			strats[currentMap] = make(map[string][]string)
+			foundMap = true
 		}
 
 		if strings.Contains(line, "Site") {
-			tempSlice := strings.Fields(line)
-			currentSite = strings.Join(tempSlice[1:], " ")
-			foundSite = true
-			ops = nil
-			continue
+			if foundMap {
+				tempSlice := strings.Fields(line)
+				currentSite = strings.Join(tempSlice[1:], " ")
+				strats[currentMap][currentSite] = nil
+				foundSite = true
+				continue
+			}
 		}
 
 		if foundSite && slices.Contains(allOps, line) {
-			ops = append(ops, line)
-
-			if len(ops) == 5 {
-				strats[currentSite] = ops
+			if len(strats[currentMap][currentSite]) < 5 {
+				strats[currentMap][currentSite] = append(strats[currentMap][currentSite], line)
+			} else {
 				foundSite = false
-				currentMap = ""
 			}
 		}
 
 	}
-
-	// fmt.Println(maps["CEO - Executive Lounge"])
-	// if slice, ok := maps["Lockers - CCTV"].([]string); ok {
-	// 	for i, op := range slice {
-	// 		fmt.Println(i, op)
-	// 	}
-	// }
 
 	return strats
 }

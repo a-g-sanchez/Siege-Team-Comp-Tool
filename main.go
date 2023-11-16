@@ -7,5 +7,9 @@ import (
 )
 
 func main() {
-	fmt.Println(initializers.SetData())
+	stratData := initializers.SetData()
+
+	fmt.Println(stratData)
+	// fmt.Println(stratData["border"])
+	// fmt.Println(stratData["coastline"]["Hookah - Billiards"])
 }
