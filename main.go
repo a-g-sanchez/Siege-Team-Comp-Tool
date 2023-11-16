@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	initializers.ReadFile()
+	initializers.SetData()
 }

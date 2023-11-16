@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func ReadFile() {
+func SetData() {
 	file, err := os.Open("R6-SIEGE-TEAM-COMP-BANK.csv")
 
 	if err != nil {
@@ -20,8 +20,52 @@ func ReadFile() {
 
 	reader := bufio.NewReader(file)
 
-	mapPool := []string{"bank", "coastline", "border"}
-	currentOps := []string{"Hibana", "Thermite", "Fenrir", "Bandit", "Buck"}
+	// mapPool := []string{
+	// 	"bank",
+	// 	"coastline",
+	// 	"border",
+	// 	"stadim",
+	// 	"chalet",
+	// 	"clubhouse",
+	// }
+
+	currentOps := []string{
+		"Glaz",
+		"Fuze",
+		"IQ",
+		"Blitz",
+		"Twitch",
+		"Montagne",
+		"Thermite",
+		"Ash",
+		"Thatcher",
+		"Sledge",
+		"Buck",
+		"Blackbeard",
+		"Capitao",
+		"Hibana",
+		"Jackel",
+		"Ying",
+		"Zofia",
+		"Dokkaebi",
+		"Finka",
+		"Lion",
+		"Maverick",
+		"Nomad",
+		"Gridlock",
+		"Nokk",
+		"Amaru",
+		"Kali",
+		"Iana",
+		"Ace",
+		"Zero",
+		"Flores",
+		"Osa",
+		"Sens",
+		"Grim",
+		"Brava",
+		"Ram",
+	}
 
 	type siteLocation struct {
 		siteName    string
@@ -35,7 +79,7 @@ func ReadFile() {
 		line = strings.TrimSpace(line)
 
 		if err == io.EOF {
-			fmt.Println(line)
+			// fmt.Println(line)
 			if slices.Contains(currentOps, line) {
 				bank.opererators = append(bank.opererators, line)
 			}
@@ -45,12 +89,14 @@ func ReadFile() {
 			break
 		}
 
-		fmt.Println(line)
-		if slices.Contains(mapPool, line) {
-			bank.siteName = line
+		if strings.Contains(line, "Site") {
+			tempSiteSLice := strings.Fields(line)
+			site := strings.Join(tempSiteSLice[1:], " ")
+			bank.siteName = site
 		} else if slices.Contains(currentOps, line) {
 			bank.opererators = append(bank.opererators, line)
 		}
+
 	}
 
 	fmt.Println(bank)
