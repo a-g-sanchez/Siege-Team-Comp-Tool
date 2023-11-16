@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/a-g-sanchez/hackathon-project/initializers"
 )
 
 func main() {
-	initializers.SetData()
+	fmt.Println(initializers.SetData())
 }

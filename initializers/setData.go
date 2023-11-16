@@ -8,7 +8,9 @@ import (
 	"strings"
 )
 
-func SetData() {
+type StratData map[string]interface{}
+
+func SetData() StratData {
 	file, err := os.Open("R6-SIEGE-TEAM-COMP-BANK.csv")
 
 	if err != nil {
@@ -66,9 +68,9 @@ func SetData() {
 		"Ram",
 	}
 
-	type mapData map[string]interface{}
+	// type stratData map[string]interface{}
 
-	maps := make(mapData)
+	strats := make(StratData)
 
 	var currentMap string
 	var currentSite string
@@ -81,7 +83,7 @@ func SetData() {
 
 		if slices.Contains(mapPool, line) {
 			currentMap = line
-			maps["mapName"] = currentMap
+			strats["mapName"] = currentMap
 		}
 
 		if strings.Contains(line, "Site") {
@@ -96,7 +98,7 @@ func SetData() {
 			ops = append(ops, line)
 
 			if len(ops) == 5 {
-				maps[currentSite] = ops
+				strats[currentSite] = ops
 				foundSite = false
 				currentMap = ""
 			}
@@ -110,4 +112,6 @@ func SetData() {
 	// 		fmt.Println(i, op)
 	// 	}
 	// }
+
+	return strats
 }
