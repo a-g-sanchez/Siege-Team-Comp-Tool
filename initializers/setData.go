@@ -3,14 +3,13 @@ package initializers
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"os"
 	"slices"
 	"strings"
 )
 
-func SetData() {
-	file, err := os.Open("R6-SIEGE-TEAM-COMP-BANK.csv")
+func SetData() map[string]map[string][]string {
+	file, err := os.Open("R6-SIEGE-TEAM-COMP.csv")
 
 	if err != nil {
 		fmt.Println("Error: ", err)
@@ -18,18 +17,19 @@ func SetData() {
 
 	defer file.Close()
 
-	reader := bufio.NewReader(file)
+	scanner := bufio.NewScanner(file)
 
-	// mapPool := []string{
-	// 	"bank",
-	// 	"coastline",
-	// 	"border",
-	// 	"stadim",
-	// 	"chalet",
-	// 	"clubhouse",
-	// }
+	mapPool := []string{
+		"bank",
+		"coastline",
+		"border",
+		"stadim",
+		"chalet",
+		"clubhouse",
+		"theme park",
+	}
 
-	currentOps := []string{
+	allOps := []string{
 		"Glaz",
 		"Fuze",
 		"IQ",
@@ -67,37 +67,41 @@ func SetData() {
 		"Ram",
 	}
 
-	type siteLocation struct {
-		siteName    string
-		opererators []string
-	}
+	strats := make(map[string]map[string][]string)
 
-	var bank siteLocation
+	var currentMap string
+	var currentSite string
+	var foundMap, foundSite bool
 
-	for {
-		line, err := reader.ReadString('\n')
+	for scanner.Scan() {
+		line := scanner.Text()
 		line = strings.TrimSpace(line)
 
-		if err == io.EOF {
-			// fmt.Println(line)
-			if slices.Contains(currentOps, line) {
-				bank.opererators = append(bank.opererators, line)
-			}
-			break
-		} else if err != nil {
-			fmt.Println("Error reading file", err)
-			break
+		if slices.Contains(mapPool, line) {
+			currentMap = line
+			strats[currentMap] = make(map[string][]string)
+			foundMap = true
 		}
 
 		if strings.Contains(line, "Site") {
-			tempSiteSLice := strings.Fields(line)
-			site := strings.Join(tempSiteSLice[1:], " ")
-			bank.siteName = site
-		} else if slices.Contains(currentOps, line) {
-			bank.opererators = append(bank.opererators, line)
+			if foundMap {
+				tempSlice := strings.Fields(line)
+				currentSite = strings.Join(tempSlice[1:], " ")
+				strats[currentMap][currentSite] = nil
+				foundSite = true
+				continue
+			}
+		}
+
+		if foundSite && slices.Contains(allOps, line) {
+			if len(strats[currentMap][currentSite]) < 5 {
+				strats[currentMap][currentSite] = append(strats[currentMap][currentSite], line)
+			} else {
+				foundSite = false
+			}
 		}
 
 	}
 
-	fmt.Println(bank)
+	return strats
 }
