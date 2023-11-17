@@ -8,7 +8,17 @@ import (
 	"strings"
 )
 
-func SetData() map[string]map[string][]string {
+type SiteLocation struct {
+	Name      string
+	Operators []string
+}
+
+type MapLocation struct {
+	Name  string
+	Sites []SiteLocation
+}
+
+func SetData() []MapLocation {
 	file, err := os.Open("R6-SIEGE-TEAM-COMP.csv")
 
 	if err != nil {
@@ -29,76 +39,81 @@ func SetData() map[string]map[string][]string {
 		"theme park",
 	}
 
-	allOps := []string{
-		"Glaz",
-		"Fuze",
-		"IQ",
-		"Blitz",
-		"Twitch",
-		"Montagne",
-		"Thermite",
-		"Ash",
-		"Thatcher",
-		"Sledge",
-		"Buck",
-		"Blackbeard",
-		"Capitao",
-		"Hibana",
-		"Jackel",
-		"Ying",
-		"Zofia",
-		"Dokkaebi",
-		"Finka",
-		"Lion",
-		"Maverick",
-		"Nomad",
-		"Gridlock",
-		"Nokk",
-		"Amaru",
-		"Kali",
-		"Iana",
-		"Ace",
-		"Zero",
-		"Flores",
-		"Osa",
-		"Sens",
-		"Grim",
-		"Brava",
-		"Ram",
-	}
+	// allOps := []string{
+	// 	"Glaz",
+	// 	"Fuze",
+	// 	"IQ",
+	// 	"Blitz",
+	// 	"Twitch",
+	// 	"Montagne",
+	// 	"Thermite",
+	// 	"Ash",
+	// 	"Thatcher",
+	// 	"Sledge",
+	// 	"Buck",
+	// 	"Blackbeard",
+	// 	"Capitao",
+	// 	"Hibana",
+	// 	"Jackel",
+	// 	"Ying",
+	// 	"Zofia",
+	// 	"Dokkaebi",
+	// 	"Finka",
+	// 	"Lion",
+	// 	"Maverick",
+	// 	"Nomad",
+	// 	"Gridlock",
+	// 	"Nokk",
+	// 	"Amaru",
+	// 	"Kali",
+	// 	"Iana",
+	// 	"Ace",
+	// 	"Zero",
+	// 	"Flores",
+	// 	"Osa",
+	// 	"Sens",
+	// 	"Grim",
+	// 	"Brava",
+	// 	"Ram",
+	// }
 
-	strats := make(map[string]map[string][]string)
+	var currentMap MapLocation
+	var currentSite SiteLocation
 
-	var currentMap string
-	var currentSite string
-	var foundMap, foundSite bool
+	var strats []MapLocation
 
 	for scanner.Scan() {
+
 		line := scanner.Text()
 		line = strings.TrimSpace(line)
 
+		if line == "" {
+			continue
+		}
+
 		if slices.Contains(mapPool, line) {
-			currentMap = line
-			strats[currentMap] = make(map[string][]string)
-			foundMap = true
+			currentMap = MapLocation{Name: line}
+			if currentMap.Name != "" {
+				strats = append(strats, currentMap)
+			}
 		}
 
 		if strings.Contains(line, "Site") {
-			if foundMap {
-				tempSlice := strings.Fields(line)
-				currentSite = strings.Join(tempSlice[1:], " ")
-				strats[currentMap][currentSite] = nil
-				foundSite = true
-				continue
-			}
-		}
+			tempSlice := strings.Fields(line)
+			siteName := strings.Join(tempSlice[1:], " ")
+			currentSite = SiteLocation{Name: siteName}
+			currentMap.Sites = append(currentMap.Sites, currentSite)
 
-		if foundSite && slices.Contains(allOps, line) {
-			if len(strats[currentMap][currentSite]) < 5 {
-				strats[currentMap][currentSite] = append(strats[currentMap][currentSite], line)
-			} else {
-				foundSite = false
+			for _, mapLoc := range strats {
+				for i, siteLoc := range mapLoc.Sites {
+					// if slice, ok := siteLoc[i] != siteName; ok{
+					// 	// fmt.Println(slice)
+					// }
+					fmt.Println(i, siteLoc)
+
+				}
 			}
+			// fmt.Println(currentMap)
 		}
 
 	}
