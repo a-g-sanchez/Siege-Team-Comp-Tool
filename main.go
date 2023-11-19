@@ -1,15 +1,13 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/a-g-sanchez/hackathon-project/initializers"
 )
 
 func main() {
-	stratData := initializers.SetData()
-
-	fmt.Println(stratData)
+	// stratData := initializers.SetData()
+	initializers.SetData()
+	// fmt.Println(stratData)
 
 	// display the maps with the map name as the key and is value is a map datatype with the sites as a key and the operators for that site as its value
 	// for key, value := range stratData {
