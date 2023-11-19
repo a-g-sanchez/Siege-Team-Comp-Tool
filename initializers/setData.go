@@ -102,19 +102,16 @@ func SetData() []MapLocation {
 			tempSlice := strings.Fields(line)
 			siteName := strings.Join(tempSlice[1:], " ")
 			currentSite = SiteLocation{Name: siteName}
-			// currentMap.Sites = append(currentMap.Sites, currentSite)
 
 			for i, mapIndex := range strats {
 				if mapIndex.Name == currentMap.Name {
-					// fmt.Println("Were at: ", currentMap.Name, "|", currentMap.Sites, i)
-
 					strats[i].Sites = append(strats[i].Sites, currentSite)
 				}
 			}
 		}
 
 	}
-	// fmt.Println(currentMap.Sites)
+
 	fmt.Println(strats)
 
 	return strats
