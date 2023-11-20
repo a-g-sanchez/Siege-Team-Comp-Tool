@@ -39,43 +39,43 @@ func SetData() []MapLocation {
 		"theme park",
 	}
 
-	// allOps := []string{
-	// 	"Glaz",
-	// 	"Fuze",
-	// 	"IQ",
-	// 	"Blitz",
-	// 	"Twitch",
-	// 	"Montagne",
-	// 	"Thermite",
-	// 	"Ash",
-	// 	"Thatcher",
-	// 	"Sledge",
-	// 	"Buck",
-	// 	"Blackbeard",
-	// 	"Capitao",
-	// 	"Hibana",
-	// 	"Jackel",
-	// 	"Ying",
-	// 	"Zofia",
-	// 	"Dokkaebi",
-	// 	"Finka",
-	// 	"Lion",
-	// 	"Maverick",
-	// 	"Nomad",
-	// 	"Gridlock",
-	// 	"Nokk",
-	// 	"Amaru",
-	// 	"Kali",
-	// 	"Iana",
-	// 	"Ace",
-	// 	"Zero",
-	// 	"Flores",
-	// 	"Osa",
-	// 	"Sens",
-	// 	"Grim",
-	// 	"Brava",
-	// 	"Ram",
-	// }
+	allOps := []string{
+		"Glaz",
+		"Fuze",
+		"IQ",
+		"Blitz",
+		"Twitch",
+		"Montagne",
+		"Thermite",
+		"Ash",
+		"Thatcher",
+		"Sledge",
+		"Buck",
+		"Blackbeard",
+		"Capitao",
+		"Hibana",
+		"Jackel",
+		"Ying",
+		"Zofia",
+		"Dokkaebi",
+		"Finka",
+		"Lion",
+		"Maverick",
+		"Nomad",
+		"Gridlock",
+		"Nokk",
+		"Amaru",
+		"Kali",
+		"Iana",
+		"Ace",
+		"Zero",
+		"Flores",
+		"Osa",
+		"Sens",
+		"Grim",
+		"Brava",
+		"Ram",
+	}
 
 	var currentMap MapLocation
 	var currentSite SiteLocation
@@ -110,9 +110,24 @@ func SetData() []MapLocation {
 			}
 		}
 
+		if slices.Contains(allOps, line) {
+			currentSite.Operators = append(currentSite.Operators, line)
+			for i, mapIndex := range strats {
+				if mapIndex.Name == currentMap.Name {
+					for j, sites := range mapIndex.Sites {
+						if sites.Name == currentSite.Name {
+							strats[i].Sites[j].Operators = append(strats[i].Sites[j].Operators, line)
+						}
+					}
+				}
+
+			}
+			// fmt.Println(currentSite)
+		}
+
 	}
 
-	fmt.Println(strats)
+	fmt.Println(strats[2])
 
 	return strats
 }
