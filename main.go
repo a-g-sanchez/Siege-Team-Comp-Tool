@@ -8,11 +8,8 @@ import (
 
 func main() {
 	stratData := initializers.SetData()
-
-	// display the maps with the map name as the key and is value is a map datatype with the sites as a key and the operators for that site as its value
-	// for key, value := range stratData {
-	// 	fmt.Println(key, value)
-	// }
+	// initializers.SetData()
+	fmt.Println(stratData)
 
 	commands := map[string]string{
 		"[help]":       "Display available commands",
@@ -50,7 +47,13 @@ func main() {
 				fmt.Println(val)
 			}
 		case "bank":
-			fmt.Println(stratData[userInput])
+			var selectedMap initializers.MapLocation
+			for _, mapChoices := range stratData {
+				if mapChoices.Name == userInput {
+					selectedMap = mapChoices
+				}
+			}
+			fmt.Println(selectedMap)
 		case "exit":
 			loop = false
 		default:

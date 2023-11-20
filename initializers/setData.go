@@ -8,7 +8,17 @@ import (
 	"strings"
 )
 
-func SetData() map[string]map[string][]string {
+type SiteLocation struct {
+	Name      string
+	Operators []string
+}
+
+type MapLocation struct {
+	Name  string
+	Sites []SiteLocation
+}
+
+func SetData() []MapLocation {
 	file, err := os.Open("R6-SIEGE-TEAM-COMP.csv")
 
 	if err != nil {
@@ -67,37 +77,50 @@ func SetData() map[string]map[string][]string {
 		"Ram",
 	}
 
-	strats := make(map[string]map[string][]string)
+	var currentMap MapLocation
+	var currentSite SiteLocation
 
-	var currentMap string
-	var currentSite string
-	var foundMap, foundSite bool
+	var strats []MapLocation
 
 	for scanner.Scan() {
+
 		line := scanner.Text()
 		line = strings.TrimSpace(line)
 
-		if slices.Contains(mapPool, line) {
-			currentMap = line
-			strats[currentMap] = make(map[string][]string)
-			foundMap = true
+		if line == "" {
+			continue
 		}
 
-		if strings.Contains(line, "Site") {
-			if foundMap {
-				tempSlice := strings.Fields(line)
-				currentSite = strings.Join(tempSlice[1:], " ")
-				strats[currentMap][currentSite] = nil
-				foundSite = true
-				continue
+		if slices.Contains(mapPool, line) {
+			currentMap = MapLocation{Name: line}
+			if currentMap.Name != "" {
+				strats = append(strats, currentMap)
 			}
 		}
 
-		if foundSite && slices.Contains(allOps, line) {
-			if len(strats[currentMap][currentSite]) < 5 {
-				strats[currentMap][currentSite] = append(strats[currentMap][currentSite], line)
-			} else {
-				foundSite = false
+		if strings.Contains(line, "Site") {
+			tempSlice := strings.Fields(line)
+			siteName := strings.Join(tempSlice[1:], " ")
+			currentSite = SiteLocation{Name: siteName}
+
+			for i, mapIndex := range strats {
+				if mapIndex.Name == currentMap.Name {
+					strats[i].Sites = append(strats[i].Sites, currentSite)
+				}
+			}
+		}
+
+		if slices.Contains(allOps, line) {
+			currentSite.Operators = append(currentSite.Operators, line)
+			for i, mapIndex := range strats {
+				if mapIndex.Name == currentMap.Name {
+					for j, sites := range mapIndex.Sites {
+						if sites.Name == currentSite.Name {
+							strats[i].Sites[j].Operators = append(strats[i].Sites[j].Operators, line)
+						}
+					}
+				}
+
 			}
 		}
 
