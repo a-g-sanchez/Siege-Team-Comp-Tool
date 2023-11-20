@@ -122,12 +122,9 @@ func SetData() []MapLocation {
 				}
 
 			}
-			// fmt.Println(currentSite)
 		}
 
 	}
-
-	fmt.Println(strats[2])
 
 	return strats
 }
