@@ -37,18 +37,26 @@ func main() {
 	title := tview.NewTextView().SetText("Welcome! Select a map")
 	list := tview.NewList().ShowSecondaryText(false)
 
+	infoDisplay := tview.NewTextView()
+
 	flex := tview.NewFlex().
-		SetDirection(0).
+		SetDirection(tview.FlexRow).
 		AddItem(title, 1, 2, false).
-		AddItem(list, 0, 1, false)
+		AddItem(list, 0, 1, false).
+		AddItem(infoDisplay, 0, 1, false)
 
 	for i, strat := range stratData {
-		idx := i + 1
-		fmt.Println(idx)
-		list.AddItem(strat.Name, "", 0, nil)
+		list.AddItem(strat.Name, "", rune(i+'0'), nil)
+
+		list.SetSelectedFunc(func(idx int, _ string, _ string, _ rune) {
+			ind := fmt.Sprintf("%d", idx)
+			text := fmt.Sprintf("selected item %s", ind)
+			infoDisplay.SetText(text)
+		})
+
 	}
 
-	list.AddItem("Exit", "", 'q', func() {
+	list.AddItem("exit", "", 'q', func() {
 		app.Stop()
 	})
 
