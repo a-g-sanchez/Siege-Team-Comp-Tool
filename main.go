@@ -49,9 +49,14 @@ func main() {
 		list.AddItem(strat.Name, "", rune(i+'0'), nil)
 
 		list.SetSelectedFunc(func(idx int, _ string, _ string, _ rune) {
-			ind := fmt.Sprintf("%d", idx)
-			text := fmt.Sprintf("selected item %s", ind)
-			infoDisplay.SetText(text)
+
+			if idx < len(stratData) {
+				site := stratData[idx].Sites[0].Name
+
+				text := fmt.Sprintf("Site %s", site)
+				infoDisplay.SetText(text)
+			}
+
 		})
 
 	}
