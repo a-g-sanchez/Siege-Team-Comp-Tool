@@ -8,8 +8,6 @@ import (
 
 func main() {
 	stratData := initializers.SetData()
-	// initializers.SetData()
-	fmt.Println(stratData)
 
 	commands := map[string]string{
 		"[help]":       "Display available commands",
@@ -46,7 +44,7 @@ func main() {
 			for _, val := range availableMaps {
 				fmt.Println(val)
 			}
-		case "bank":
+		case "border":
 			var selectedMap initializers.MapLocation
 			for _, mapChoices := range stratData {
 				if mapChoices.Name == userInput {
