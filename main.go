@@ -41,28 +41,29 @@ func main() {
 
 	flex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
-		AddItem(title, 1, 2, false).
+		AddItem(title, 1, 1, false).
 		AddItem(list, 0, 1, false).
 		AddItem(infoDisplay, 0, 1, false)
 
 	for i, strat := range stratData {
 		list.AddItem(strat.Name, "", rune(i+'0'), nil)
-
-		list.SetSelectedFunc(func(idx int, _ string, _ string, _ rune) {
-
-			if idx < len(stratData) {
-				site := stratData[idx].Sites[0].Name
-
-				text := fmt.Sprintf("Site %s", site)
-				infoDisplay.SetText(text)
-			}
-
-		})
-
 	}
 
 	list.AddItem("exit", "", 'q', func() {
 		app.Stop()
+	})
+
+	list.SetSelectedFunc(func(idx int, _ string, _ string, _ rune) {
+		var str string
+		if idx < len(stratData) {
+			// str += fmt.Sprintf("\n")
+			for _, site := range stratData[idx].Sites {
+				str += fmt.Sprintf("%s\n %s\n\n", site.Name, site.Operators)
+			}
+
+		}
+		infoDisplay.SetText(str)
+
 	})
 
 	if err := app.SetRoot(flex, true).SetFocus(list).Run(); err != nil {
