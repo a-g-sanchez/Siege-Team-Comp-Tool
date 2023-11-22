@@ -4,59 +4,49 @@ import (
 	"fmt"
 
 	"github.com/a-g-sanchez/hackathon-project/initializers"
+	"github.com/rivo/tview"
 )
+
+func init() {
+	initializers.SetTheme()
+}
 
 func main() {
 	stratData := initializers.SetData()
 
-	commands := map[string]string{
-		"[help]":       "Display available commands",
-		"[exit]":       "Exit the application",
-		"[maps]":       "Display availabe maps to query",
-		"[*map name*]": "Enter a map name and see the sites with operators",
+	app := tview.NewApplication()
+
+	title := tview.NewTextView().SetText("Welcome! Select a map")
+	list := tview.NewList().ShowSecondaryText(false)
+
+	infoDisplay := tview.NewTextView()
+
+	flex := tview.NewFlex().
+		SetDirection(tview.FlexRow).
+		AddItem(title, 1, 1, false).
+		AddItem(list, 0, 1, false).
+		AddItem(infoDisplay, 0, 1, false)
+
+	for i, strat := range stratData {
+		list.AddItem(strat.Name, "", rune(i+'0'), nil)
 	}
 
-	availableMaps := []string{
-		"bank",
-		"coastline",
-		"border",
-		"stadim",
-		"chalet",
-		"clubhouse",
-		"theme park",
-	}
+	list.AddItem("exit", "", 'q', func() {
+		app.Stop()
+	})
 
-	var userInput string
-
-	loop := true
-	for loop {
-
-		// Look to change this to use args
-		fmt.Scan(&userInput)
-
-		switch userInput {
-		case "help":
-			for key, val := range commands {
-				fmt.Println(key, " - ", val)
+	list.SetSelectedFunc(func(idx int, _ string, _ string, _ rune) {
+		var str string
+		if idx < len(stratData) {
+			for _, site := range stratData[idx].Sites {
+				str += fmt.Sprintf("%s\n %s\n\n", site.Name, site.Operators)
 			}
-		case "maps":
-			fmt.Println("Available maps are: ")
-			for _, val := range availableMaps {
-				fmt.Println(val)
-			}
-		case "border":
-			var selectedMap initializers.MapLocation
-			for _, mapChoices := range stratData {
-				if mapChoices.Name == userInput {
-					selectedMap = mapChoices
-				}
-			}
-			fmt.Println(selectedMap)
-		case "exit":
-			loop = false
-		default:
-			fmt.Println("That is not a valid command")
 		}
+		infoDisplay.SetText(str)
 
+	})
+
+	if err := app.SetRoot(flex, true).SetFocus(list).Run(); err != nil {
+		panic(err)
 	}
 }
