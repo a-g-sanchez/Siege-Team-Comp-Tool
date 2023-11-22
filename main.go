@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/a-g-sanchez/hackathon-project/initializers"
+	"github.com/a-g-sanchez/siege-team-comp-tool/initializers"
 	"github.com/rivo/tview"
 )
 

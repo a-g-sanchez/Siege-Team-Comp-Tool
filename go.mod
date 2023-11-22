@@ -1,4 +1,4 @@
-module github.com/a-g-sanchez/hackathon-project
+module github.com/a-g-sanchez/siege-team-comp-tool
 
 go 1.21.3
 
