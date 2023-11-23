@@ -10,6 +10,14 @@ Siege Team Comp Tool is a CLI tool written in Golang geared towards helping comp
 
 3. Edit the data in the CSV file as needed
 
-4. Run go run main.go in the terminal <!-- See if you can have a code snippet for the command -->
+4. Run the following in the terminal to start the program:
+
+```bash
+go run main.go
+```
 
 5. Select which map you would like to view
+
+## Dependencies
+
+This program utilizes the [tview](https://github.com/rivo/tview) and [tcell](https://github.com/gdamore/tcell) packages.
