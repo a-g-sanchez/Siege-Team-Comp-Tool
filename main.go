@@ -33,7 +33,7 @@ func main() {
 		list.AddItem(strat.Name, "", rune(i+'0'), nil)
 	}
 
-	list.AddItem("exit", "", 'q', func() {
+	list.AddItem("Quit", "", 'q', func() {
 		app.Stop()
 	})
 

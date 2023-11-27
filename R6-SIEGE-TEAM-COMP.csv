@@ -1,4 +1,4 @@
-bank
+Bank
 
 Site: Lockers - CCTV
 Hibana
@@ -14,7 +14,7 @@ Ace
 Gridlock
 Sledge
 
-coastline 
+Coastline 
 
 Site: Hookah - Billiards
 Ace
@@ -30,7 +30,7 @@ Sens
 Dokkaebi
 Nomad
 
-border 
+Border 
 
 Site: Armory - Archives
 Thatcher
@@ -39,6 +39,13 @@ Zero
 Nomad
 Lion
 
+Site: Armory - Archives (Thatch ban)
+Lion
+Thermite
+Nomad
+Dokkaebi
+Zero
+
 Site: Ventalation - Workshop
 Ram
 Fuze
@@ -46,7 +53,7 @@ Zero
 Nomad
 Lion
 
-clubhouse 
+Clubhouse 
 
 Site: CCTV - Cash
 Thermite
@@ -61,3 +68,11 @@ Thermite
 Gridlock
 Osa
 Jackel
+
+Theme Park 
+Site: Throne Room - Armory 
+Thermite
+Flores
+Dokkaebi
+Thatcher
+Nomad
