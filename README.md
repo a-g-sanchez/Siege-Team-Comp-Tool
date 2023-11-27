@@ -6,7 +6,9 @@ Siege Team Comp Tool is a CLI tool written in Golang geared towards helping comp
 
 ## Demo
 
-<img src="https://imgur.com/A3fzeQ6" alt="CLI demo" width="100">
+<!-- <img src="https://imgur.com/A3fzeQ6.gif" alt="CLI demo"> -->
+
+![CLI demo](https://imgur.com/A3fzeQ6.gif)
 
 ## Setup Guide
 
