@@ -25,8 +25,6 @@ func main() {
 	list := tview.NewList().
 		ShowSecondaryText(false)
 
-	placeholder := tview.NewTextView()
-
 	siteDisplay := tview.NewTextView()
 
 	for i, strat := range stratData {
@@ -48,22 +46,18 @@ func main() {
 
 	})
 
-	// Building an terminal interface
-	listFlex := tview.NewFlex().
-		SetDirection(tview.FlexRow).
-		AddItem(title, 0, 1, false).
-		AddItem(list, 0, 3, false)
-
+	// Creating terminal layout
 	infoFlex := tview.NewFlex().
-		SetDirection(tview.FlexRow).
-		AddItem(placeholder, 0, 1, false).
-		AddItem(siteDisplay, 0, 3, false)
+		SetDirection(tview.FlexColumn).
+		AddItem(list, 0, 1, false).
+		AddItem(siteDisplay, 0, 1, false)
 
 	mainFlex := tview.NewFlex().
-		SetDirection(tview.FlexColumn).
-		AddItem(listFlex, 0, 1, false).
-		AddItem(infoFlex, 0, 1, false)
+		SetDirection(tview.FlexRow).
+		AddItem(title, 0, 1, false).
+		AddItem(infoFlex, 0, 3, false)
 
+	// Running the tview app
 	if err := app.SetRoot(mainFlex, true).SetFocus(list).Run(); err != nil {
 		panic(err)
 	}
