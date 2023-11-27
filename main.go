@@ -12,20 +12,22 @@ func init() {
 }
 
 func main() {
+
+	// Getting data from the csv file
 	stratData := initializers.SetData()
 
+	// Setting up the tview display
 	app := tview.NewApplication()
 
-	title := tview.NewTextView().SetText("Welcome! Select a map")
-	list := tview.NewList().ShowSecondaryText(false)
+	title := tview.NewTextView().
+		SetText("Select a map to view operators")
 
-	infoDisplay := tview.NewTextView()
+	list := tview.NewList().
+		ShowSecondaryText(false)
 
-	flex := tview.NewFlex().
-		SetDirection(tview.FlexRow).
-		AddItem(title, 1, 1, false).
-		AddItem(list, 0, 1, false).
-		AddItem(infoDisplay, 0, 1, false)
+	placeholder := tview.NewTextView()
+
+	siteDisplay := tview.NewTextView()
 
 	for i, strat := range stratData {
 		list.AddItem(strat.Name, "", rune(i+'0'), nil)
@@ -42,11 +44,27 @@ func main() {
 				str += fmt.Sprintf("%s\n %s\n\n", site.Name, site.Operators)
 			}
 		}
-		infoDisplay.SetText(str)
+		siteDisplay.SetText(str)
 
 	})
 
-	if err := app.SetRoot(flex, true).SetFocus(list).Run(); err != nil {
+	// Building an terminal interface
+	listFlex := tview.NewFlex().
+		SetDirection(tview.FlexRow).
+		AddItem(title, 0, 1, false).
+		AddItem(list, 0, 3, false)
+
+	infoFlex := tview.NewFlex().
+		SetDirection(tview.FlexRow).
+		AddItem(placeholder, 0, 1, false).
+		AddItem(siteDisplay, 0, 3, false)
+
+	mainFlex := tview.NewFlex().
+		SetDirection(tview.FlexColumn).
+		AddItem(listFlex, 0, 1, false).
+		AddItem(infoFlex, 0, 1, false)
+
+	if err := app.SetRoot(mainFlex, true).SetFocus(list).Run(); err != nil {
 		panic(err)
 	}
 }
