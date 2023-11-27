@@ -30,13 +30,22 @@ func SetData() []MapLocation {
 	scanner := bufio.NewScanner(file)
 
 	mapPool := []string{
-		"bank",
-		"coastline",
-		"border",
-		"stadim",
-		"chalet",
-		"clubhouse",
-		"theme park",
+		"Bank",
+		"Coastline",
+		"Border",
+		"Stadim",
+		"Chalet",
+		"Clubhouse",
+		"Theme Park",
+		"Nighthaven Labs",
+		"Emerald Plains",
+		"Consulate",
+		"Kafe",
+		"Kanal",
+		"Oregon",
+		"Outback",
+		"Skyscraper",
+		"Villa",
 	}
 
 	allOps := []string{
