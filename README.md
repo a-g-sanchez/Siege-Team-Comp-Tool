@@ -4,6 +4,10 @@
 
 Siege Team Comp Tool is a CLI tool written in Golang geared towards helping competivite Rainbow 6: Siege teams organize their in game team composition.
 
+## Demo
+
+<img src="https://imgur.com/A3fzeQ6" alt="CLI demo" width="100">
+
 ## Setup Guide
 
 1. Clone repository
